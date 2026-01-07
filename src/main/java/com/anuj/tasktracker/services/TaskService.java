@@ -4,6 +4,8 @@ import com.anuj.tasktracker.models.Task;
 import com.anuj.tasktracker.repo.TaskRepo;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TaskService {
     private final TaskRepo repo;
@@ -13,5 +15,9 @@ public class TaskService {
     }
     public Task add(Task task){
         return repo.save(task);
+    }
+
+    public List<Task> getAll() {
+        return repo.findAll();
     }
 }
