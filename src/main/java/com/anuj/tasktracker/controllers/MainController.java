@@ -46,4 +46,9 @@ public class MainController {
         return updatedTask.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.noContent().build());
     }
+    @GetMapping("/done-tasks")
+    public ResponseEntity<List<Task>> getAllDoneTasks(){
+        return service.getAllDoneTask().map(ResponseEntity::ok)
+                .orElse(ResponseEntity.noContent().build());
+    }
 }

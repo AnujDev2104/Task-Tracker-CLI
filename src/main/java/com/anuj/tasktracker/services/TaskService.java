@@ -2,9 +2,11 @@ package com.anuj.tasktracker.services;
 
 import com.anuj.tasktracker.models.Task;
 import com.anuj.tasktracker.repo.TaskRepo;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,5 +44,14 @@ public class TaskService {
             taskRepo.save(existing);
             return existing;
         });
+    }
+
+    public  Optional<List<Task>> getAllDoneTask() {
+        List<Task> allTask = getAll();
+        List<Task> doneTask = new ArrayList<>();
+        for(Task task : allTask){
+            if(task.isDone()) doneTask.add(task);
+        }
+        return Optional.of(doneTask);
     }
 }
