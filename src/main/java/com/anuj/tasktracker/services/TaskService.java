@@ -1,5 +1,6 @@
 package com.anuj.tasktracker.services;
 
+import aj.org.objectweb.asm.commons.Remapper;
 import com.anuj.tasktracker.models.Task;
 import com.anuj.tasktracker.repo.TaskRepo;
 import org.jspecify.annotations.Nullable;
@@ -63,5 +64,14 @@ public class TaskService {
             if(!task.isDone()) notDoneTasks.add(task);
         }
         return Optional.of(notDoneTasks);
+    }
+
+    public Optional<List<Task>> getAllInProgressTask() {
+        List<Task> allTask = getAll();
+        List<Task> inProgress = new ArrayList<>();
+        for(Task task : allTask){
+            if(task.isInProgress()) inProgress.add(task);
+        }
+        return Optional.of(inProgress);
     }
 }

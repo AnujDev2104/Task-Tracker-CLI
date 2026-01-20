@@ -58,4 +58,9 @@ public class MainController {
         return service.getNotDoneTasks().map(ResponseEntity::ok)
                 .orElse(ResponseEntity.noContent().build());
     }
+    @GetMapping("/in-progress")
+    public ResponseEntity<List<Task>> getAllTasksInProgress(){
+        return service.getAllInProgressTask().map(ResponseEntity::ok)
+                .orElse(ResponseEntity.noContent().build());
+    }
 }
