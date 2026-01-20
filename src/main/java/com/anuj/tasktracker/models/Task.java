@@ -9,21 +9,25 @@ import jakarta.persistence.Id;
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
+    private Long id;
     private String name;
     private String description;
+    private boolean inProgress;
+    private boolean done;
     public Task(){}
 
-    public Task(String name, String description) {
+    public Task(Long id, String name, String description, boolean inProgress, boolean done) {
+        this.id = id;
         this.name = name;
         this.description = description;
+        this.inProgress = inProgress;
+        this.done = done;
     }
-
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -43,12 +47,21 @@ public class Task {
         this.description = description;
     }
 
-    @Override
-    public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+    public boolean isInProgress() {
+        return inProgress;
     }
+
+    public void setInProgress(boolean inProgress) {
+        this.inProgress = inProgress;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+
+
 }

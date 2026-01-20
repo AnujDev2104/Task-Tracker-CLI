@@ -1,4 +1,5 @@
 package com.anuj.tasktracker.controllers;
+
 import com.anuj.tasktracker.models.Task;
 import com.anuj.tasktracker.services.TaskService;
 import org.apache.coyote.Response;
@@ -9,39 +10,40 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/task")
 public class MainController {
     private final TaskService service;
+
     @Autowired
-    public MainController(TaskService service){
+    public MainController(TaskService service) {
         this.service = service;
     }
 
+    @GetMapping("get-all")
+    public ResponseEntity<List<Task>> getAll() {
+        return ResponseEntity.ok(service.getAll());
+    }
+
     @PostMapping("/add")
-    public ResponseEntity<Task> addTask(@RequestBody Task task){
-        Task task1 = service.add(task);
-//        return ResponseEntity.ok(task1);
-        /*
-        * ResponseEntity.ok(task1) creates generic success code 200 OK
-        * ResponseEntity.status(HttpStatus.CREATED).body(task1); returns
-        * created 201 successful code.
-        * */
-        return ResponseEntity.status(HttpStatus.CREATED).body(task1);
+    public ResponseEntity<Task> add(@RequestBody Task task) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(service.add(task));
     }
 
-    @GetMapping("/headers")
-    public ResponseEntity<String> getHeaders(){
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Cache", "none");
-        headers.add("Custom-Header", "Spring Boot");
-        return ResponseEntity.ok().headers(headers).body("Custom-Headers");
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        boolean deleated = service.delete(id);
+        return deleated ? ResponseEntity.noContent().build() :
+                ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/all-tasks")
-    public ResponseEntity<List<Task>> getAllTasks(){
-        List<Task> tasks = service.getAll();
-        return ResponseEntity.ok(tasks);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task task) {
+        Optional<Task> updatedTask = service.update(id, task);
+        return updatedTask.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.noContent().build());
     }
 }
