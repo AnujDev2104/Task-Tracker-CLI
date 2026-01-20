@@ -4,6 +4,7 @@ import com.anuj.tasktracker.models.Task;
 import com.anuj.tasktracker.repo.TaskRepo;
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -53,5 +54,14 @@ public class TaskService {
             if(task.isDone()) doneTask.add(task);
         }
         return Optional.of(doneTask);
+    }
+
+    public Optional<List<Task>> getNotDoneTasks() {
+        List<Task> allTasks = getAll();
+        List<Task> notDoneTasks = new ArrayList<>();
+        for(Task task : allTasks){
+            if(!task.isDone()) notDoneTasks.add(task);
+        }
+        return Optional.of(notDoneTasks);
     }
 }
